@@ -4,7 +4,7 @@ import "components/Application.scss";
 
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 const days = [
   {
@@ -58,7 +58,6 @@ export default function Application(props) {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
-  // Why does react complain that useEffect has missing dependency 'setDays'?
   // const setDays = days => setState({ ...state, days });
   const setDays = days => setState(prev => ({ ...prev, days }));
 
@@ -75,6 +74,21 @@ export default function Application(props) {
 
     const appointmentsOnCurrentDay = getAppointmentsForDay(state, state.day);
     console.log(state.interviewers);
+
+    const schedule = appointmentsOnCurrentDay.map((appointment) => {
+      const interview = getInterview(state, appointment.interview);
+  
+      return (
+        <Appointment
+          key={appointment.id}
+          id={appointment.id}
+          time={appointment.time}
+          interview={interview}
+        />
+      );
+    });
+
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -95,8 +109,7 @@ export default function Application(props) {
         {/* Replace this with the sidebar elements during the "Project Setup & Familiarity" activity. */}
       </section>
       <section className="schedule">
-      {appointmentsOnCurrentDay.map(appointment=><Appointment key={appointment.id} {...appointment}/>)}
-        <Appointment key="last" time="5pm" />        
+      {schedule}    
         </section>
     </main>
   );
