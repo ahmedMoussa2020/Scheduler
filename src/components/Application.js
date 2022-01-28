@@ -4,7 +4,7 @@ import "components/Application.scss";
 
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 const days = [
   {
@@ -48,7 +48,6 @@ const appointments = [
 ];
 
 export default function Application(props) {
-  // const [day, setDay] = useState("Monday");
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -58,8 +57,8 @@ export default function Application(props) {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
-  // const setDays = days => setState({ ...state, days });
-  const setDays = days => setState(prev => ({ ...prev, days }));
+  const setDays = days => setState({ ...state, days });
+  // const setDays = days => setState(prev => ({ ...prev, days }));
 
   
   useEffect(() => {
@@ -72,11 +71,19 @@ export default function Application(props) {
     });
   },[]);
 
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+  }
+
+  function cancelInterview(id){
+    console.log(id);
+  }
+
     const appointmentsOnCurrentDay = getAppointmentsForDay(state, state.day);
-    console.log(state.interviewers);
+    const interviewersOnCurrentDay = getInterviewersForDay(state, state.day);
 
     const schedule = appointmentsOnCurrentDay.map((appointment) => {
-      const interview = getInterview(state, appointment.interview);
+    const interview = getInterview(state, appointment.interview);
   
       return (
         <Appointment
@@ -84,6 +91,9 @@ export default function Application(props) {
           id={appointment.id}
           time={appointment.time}
           interview={interview}
+          interviewers={interviewersOnCurrentDay}
+          bookInterview={bookInterview}
+          cancelInterview={cancelInterview}
         />
       );
     });

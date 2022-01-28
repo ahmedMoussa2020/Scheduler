@@ -9,7 +9,7 @@ export default function InterviewerList(props) {
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
       <ul className="interviewers__list">
-        {props.interviewers.map(interviewer => 
+        {props.interviewers&& props.interviewers.map(interviewer => 
         <InterviewerListItem key={interviewer.id} 
         setInterviewer={()=>
         props.onChange(interviewer.id)} name=
