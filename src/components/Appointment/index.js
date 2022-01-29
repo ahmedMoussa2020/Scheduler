@@ -17,6 +17,10 @@ const DELETING = 'DELETING';
 const ERROR = 'ERROR';
 const CONFIRM = 'CONFIRM';
 const EDIT = 'EDIT';
+const ERROR_SAVE = 'ERROR_SAVE';
+const ERROR_DELETE = 'ERROR_DELETE';
+
+
 
 export default function Appointment(props) {
   const { mode, back, transition } = useVisualMode(
@@ -31,20 +35,26 @@ export default function Appointment(props) {
     };
 
     transition(SAVING, true);
-    props.bookInterview(props.id, interview);
-    transition(SHOW)
+    props.bookInterview(props.id, interview)
+    .then(() => {
+      transition(SHOW)
+    }).catch((err) => {
+ 
+      transition(ERROR_SAVE, true);
+    });
+    
   }
   
   const handleDelete = () => {
     transition(DELETING, true);
     props
-      .cancelInterview()
+      .cancelInterview(props.id)
       .then(() => {
         transition(EMPTY);
       })
       .catch((err) => {
  
-        transition(ERROR, true);
+        transition(ERROR_DELETE, true);
       });
   };
 
@@ -60,7 +70,8 @@ export default function Appointment(props) {
   {mode === EMPTY && <Empty onAdd={() => transition(CREATE)}/>}
   {mode === SAVING && <Status message={'Saving'} />}
   {mode === DELETING && <Status message={'Deleting'} />}
-  {mode === ERROR && <Error message={"Something went wrong"} onClose={back} />}
+  {mode === ERROR_SAVE && <Error message={"Something went wrong, could not save appoinment"} onClose={back} />}
+  {mode === ERROR_DELETE && <Error message={"Something went wrong, appoinment is not deleted."} onClose={back} />}
 
   {mode === CREATE && <Form
             interviewers={props.interviewers}

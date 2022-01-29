@@ -5,6 +5,7 @@ import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+import useApplicationData from "hooks/useApplicationData";
 
 const days = [
   {
@@ -47,7 +48,7 @@ const appointments = [
   },
 ];
 
-export default function Application(props) {
+  export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -73,8 +74,21 @@ export default function Application(props) {
 
   function bookInterview(id, interview) {
     console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
     
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
     
+    return axios.put(`/api/appointments/${id}`,{interview})
+    .then(() => {
+      setState(prev => ({ ...prev, appointments }));
+    });
+
   }
 
   function cancelInterview(id){
@@ -90,14 +104,12 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    return axios.put(`/api/appointments/${id}`, { interview })
-    .then(() => { setState(prev => ({ ...prev, appointments })); 
+    
     return axios.delete(`/api/appointments/${id}`)
       .then(() => {
         setState(prev => ({ ...prev, appointments }));
-    });
+      });
   }
-});
 
     const appointmentsOnCurrentDay = getAppointmentsForDay(state, state.day);
     const interviewersOnCurrentDay = getInterviewersForDay(state, state.day);
