@@ -43,7 +43,7 @@ describe("Form", () => {
 
   it("submits the name entered by the user", () => {
     const onSave = jest.fn();
-    const { getByText, getByPlaceholderText } = render(
+    const { ggetByText, getByPlaceholderText, getByAltText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
 
@@ -59,7 +59,7 @@ describe("Form", () => {
 
   it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
-    const { getByText, getByPlaceholderText, queryByText } = render(
+    const { getByText, getByPlaceholderText, queryByText, getByAltText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
 
@@ -108,7 +108,7 @@ describe("Form", () => {
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
-  
+
 
 
 
