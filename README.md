@@ -1,5 +1,9 @@
 !["screenshot description"](https://github.com/ahmedMoussa2020/Scheduler/blob/master/docs/Delete-Appointment.png?raw=true)
 
+!["screenshot description"](https://github.com/ahmedMoussa2020/Scheduler/blob/master/docs/Main-page.png?raw=true)
+
+!["screenshot description"](https://github.com/ahmedMoussa2020/Scheduler/blob/master/docs/added-student.png?raw=true)
+
 # Interview Scheduler
 
 ## Setup
